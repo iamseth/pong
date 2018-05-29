@@ -3,6 +3,7 @@ local player2 = { up = 'up', down = 'down', score = 0 }
 local paddle = { speed = 200, width = 20, height = 100 }
 local ball = { x = 0, y = 0, vx = 0, vy = 0, width = 10, height = 10 }
 local sounds = {}
+local gamestate = 'start'
 
 local reset = function()
   ball.x = love.graphics.getWidth() / 2
@@ -24,8 +25,23 @@ function love.load()
   reset()
 end
 
+function love.keypressed(key)
+  if (key == 'p') then
+    if (gamestate == 'paused') then
+      gamestate = 'running'
+    else
+      gamestate = 'paused'
+    end
+  end
+
+  if (gamestate == 'start') then
+    gamestate = 'running'
+  end
+
+end
 
 function love.update(dt)
+  if not(gamestate == 'running') then return end
 
   -- Check for collision with walls and bounce if needed.
   if (ball.y < 0) then
@@ -85,6 +101,19 @@ end
 
 function love.draw()
   love.graphics.setColor(255, 255, 255)
+
+  if (gamestate == 'start') then
+    love.graphics.setFont(love.graphics.newFont(40))
+    love.graphics.printf('Press any key to begin.', 100, 100, 600, 'center')
+    return
+  end
+
+  if (gamestate == 'paused') then
+    love.graphics.setFont(love.graphics.newFont(40))
+    love.graphics.printf('Paused. Press "p" to return.', 100, 100, 600, 'center')
+    return
+  end
+
   love.graphics.rectangle('fill', player1.x, player1.y, paddle.width, paddle.height)
   love.graphics.rectangle('fill', player2.x, player2.y, paddle.width, paddle.height)
   love.graphics.rectangle('fill', ball.x, ball.y, ball.width, ball.height)

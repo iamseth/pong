@@ -8,7 +8,7 @@ test:
 	@luacheck  --std love --codes .
 
 clean:
-	@rm Pong.love
+	@rm -f Pong.love
 
 run: package
 	@love Pong.love
