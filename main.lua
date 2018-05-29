@@ -108,13 +108,13 @@ function love.draw()
 
   if (gamestate == 'start') then
     love.graphics.setFont(love.graphics.newFont(40))
-    love.graphics.printf('Press any key to begin.', 100, 100, 600, 'center')
+    love.graphics.printf('Press any key to begin.', 200, 200, 600, 'center')
     return
   end
 
   if (gamestate == 'paused') then
     love.graphics.setFont(love.graphics.newFont(40))
-    love.graphics.printf('Paused. Press "p" to return.', 100, 100, 600, 'center')
+    love.graphics.printf('Paused. Press "p" to return.', 200, 200, 600, 'center')
     return
   end
 
