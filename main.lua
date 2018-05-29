@@ -2,7 +2,7 @@ local player1 = { up = 'w', down = 's', score = 0 }
 local player2 = { up = 'up', down = 'down', score = 0 }
 local paddle = { speed = 200, width = 20, height = 100 }
 local ball = { x = 0, y = 0, vx = 0, vy = 0, width = 10, height = 10 }
-
+local sounds = {}
 
 local reset = function()
   ball.x = love.graphics.getWidth() / 2
@@ -15,6 +15,8 @@ end
 
 
 function love.load()
+  sounds.bounce = love.audio.newSource('assets/sounds/pop.mp3', 'static')
+  sounds.score = love.audio.newSource('assets/sounds/score.mp3', 'static')
   player1.x = 50
   player1.y = love.graphics.getHeight() / 2 - 50
   player2.x = love.graphics.getWidth() - 70
@@ -28,8 +30,10 @@ function love.update(dt)
   -- Check for collision with walls and bounce if needed.
   if (ball.y < 0) then
     ball.vy = -ball.vy
+    sounds.bounce:play()
   elseif (ball.y > love.graphics.getHeight() - ball.height) then
     ball.vy = -ball.vy
+    sounds.bounce:play()
   end
 
   -- Handle ball movement.
@@ -54,22 +58,26 @@ function love.update(dt)
   if not(ball.x + ball.width < player1.x  or player1.x + paddle.width < ball.x  or
          ball.y + ball.height < player1.y or player1.y + paddle.height < ball.y ) then
     ball.vx = -ball.vx
+    sounds.bounce:play()
   end
 
   if not(ball.x + ball.width < player2.x  or player2.x + paddle.width < ball.x  or
          ball.y + ball.height < player2.y or player2.y + paddle.height < ball.y ) then
     ball.vx = -ball.vx
+    sounds.bounce:play()
   end
 
 
   -- Handle scoring.
   if ball.x <= 0 then
     player2.score = player2.score + 1
+    sounds.score:play()
     reset()
   end
 
   if ball.x >= love.graphics.getWidth() then
     player1.score = player1.score + 1
+    sounds.score:play()
     reset()
   end
 end
