@@ -8,10 +8,14 @@ local gamestate = 'start'
 local reset = function()
   ball.x = love.graphics.getWidth() / 2
   ball.y = love.graphics.getHeight() / 2
-
-  -- TODO start random
-  ball.vx = 150
-  ball.vy = 150
+  ball.vx = 250
+  ball.vy = 250
+  if love.math.random() > .5 then
+    ball.vx = -ball.vx
+  end
+  if love.math.random() > .5 then
+    ball.vy = -ball.vy
+  end
 end
 
 
